@@ -1,20 +1,34 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar, Text } from "react-native";
+import { Provider } from "react-redux";
 
-export default function App() {
+import Loading from "@components/Loading";
+import { Roboto_400Regular, Roboto_700Bold } from "@expo-google-fonts/roboto";
+import { NavigationContainer } from "@react-navigation/native";
+import Routes from "@routes/index";
+import SignIn from "@screens/SignIn";
+import SignUp from "@screens/SignUp";
+import Store from "@store/store";
+import { defaultTheme } from "@themes/index";
+import { useFonts } from "expo-font";
+import { Flex, NativeBaseProvider } from "native-base";
+
+const App = () => {
+  const [fontsLoaded] = useFonts({ Roboto_400Regular, Roboto_700Bold });
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NativeBaseProvider theme={defaultTheme}>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor="transparent"
+        translucent
+      />
+      <Provider store={Store}>
+        <NavigationContainer>
+          {fontsLoaded ? <Routes /> : <Loading />}
+        </NavigationContainer>
+      </Provider>
+    </NativeBaseProvider>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
